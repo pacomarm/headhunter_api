@@ -6,11 +6,14 @@ const app = express()
 const port = 3000
 // Local
 const store = require('./store.js')
+const { validateTalent } = require('./validations.js')
 
 // Configure middlewares
 app.use(cors())
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
+
+// Validation
 
 app.get('/talent', (req, res) =>{
     res.status(200)
@@ -22,10 +25,22 @@ app.get('/talent', (req, res) =>{
 
 app.post('/talent', (req, res) => {
     const talent = req.body
-    console.log('talent to add', talent)
-    store.createTalent(talent)
-    res.status(201)
-    res.json({
+    
+    if(!validateTalent(talent)){
+        return res.status(400).json({
+            status: false,
+            message: 'Invalid Talent Object Structure'
+        })
+    }
+
+    const result = store.createTalent(talent)
+    if(!result){
+        return res.status(409).json({
+            status: false,
+            message: 'Duplicate Talent'
+        })
+    }
+    res.status(201).json({
         status: true,
     })
 })

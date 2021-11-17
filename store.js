@@ -1,11 +1,16 @@
-let books = []
+let talents = {}
 
 const getTalent = () => {
-    return books
+    return Object.values(talents)
 }
 
 const createTalent = (talent) => {
-    books.push(talent)
+    if( talents[talent.id] ){
+        return false
+    } else{
+        talents[talent.id] = talent
+        return true
+    }
 }
 
 module.exports = { getTalent, createTalent}
