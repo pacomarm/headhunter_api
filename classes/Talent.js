@@ -17,6 +17,7 @@ class Talent {
         this.reputation = score;
     }
 
+    // Para validación de contrato 
     sign_contract(contract) {
         contract.confirmation = true;
         return contract.confirmation;
